@@ -1,0 +1,118 @@
+{% extends "layout.html" %} {% block title %} {{ prof.name }} - Profile {%
+endblock %} {% block main %}
+<div class="container mt-4">
+  <div class="text-center mb-4">
+    <img
+      class="profile-img"
+      src="{{ prof.photo_url or 'https://wellcorechiropractic.com/wp-content/uploads/2022/02/profile-placeholder-e1644872101317.png' }}"
+      alt="Profile image"
+      width="140"
+      height="140"
+    />
+    <h2 class="mt-2">{{ prof.name }}</h2>
+    <p><em>{{ prof.department }}</em></p>
+    <p>Overall rating: {{ "%.1f"|format(prof.overall_score) }} ⭐</p>
+  </div>
+
+  <hr />
+
+  {% if prof.ai_summary %}
+  <hr />
+  <h3 style="margin-top: 50px">AI Summary of Reviews 🤖</h3>
+  <div class="alert alert-info ai-summery">{{ prof.ai_summary|safe }}</div>
+  {% endif %}
+
+  <h3>Reviews:</h3>
+  <div class="card-container">
+    {% if reviews %} {% for review in reviews %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a
+            href="{{ url_for('profile', user_id=review.user.id) }}"
+            style="text-decoration: none"
+          >
+            {{ review.user.username if review.user else "Anonymous" }}
+          </a>
+          <br />
+          <p style="font-size: 18px; color: gray">{{ review.rating }}/5 ⭐</p>
+        </h5>
+        <p class="card-text">{{ review.comment }}</p>
+        <small class="text-muted"
+          >Sentiment: {{ review.sentiment or "Pending" }}</small
+        >
+        <br />
+        <small class="text-muted"
+          >{{ review.created_at.strftime("%Y-%m-%d %H:%M") }}</small
+        >
+        {% if current_user.id == review.user.id %}
+        <form
+          action="{{ url_for('delete_review', review_id=review.id) }}"
+          method="POST"
+          style="display: inline"
+        >
+          <button
+            class="btn btn-sm btn-danger float-end"
+            onclick="return confirm('Delete this review?')"
+          >
+            Delete
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <p>No reviews yet. Be the first to rate!</p>
+    {% endif %}
+    <hr />
+
+    {% set user_reviewed = reviews|selectattr("user_id", "equalto",
+    current_user.id)|list|length > 0 %} {% if current_user.is_authenticated %}
+    {% if user_reviewed %}
+    <p class="text-warning">
+      You have already submitted a review for this professor.
+    </p>
+    {% else %}
+    <h3>Leave a review:</h3>
+    <form action="{{ url_for('add_review', prof_id=prof.id) }}" method="post">
+      <div class="mb-3">
+        <label for="rating" class="form-label">Rating (1-5)⭐</label>
+        <input
+          type="number"
+          class="form-control w-auto m-auto"
+          name="rating"
+          id="rating"
+          min="1"
+          max="5"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea
+          class="form-control comment-area"
+          name="comment"
+          id="comment"
+          rows="3"
+          required
+          maxlength="500"
+        ></textarea>
+        <p><span id="count">0</span> / 500</p>
+        <script>
+          const textarea = document.getElementById("comment");
+          const count = document.getElementById("count");
+
+          textarea.addEventListener("input", () => {
+            const textLength = textarea.value.replace(/\n/g, "").length;
+            count.textContent = textLength;
+          });
+        </script>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit Review</button>
+    </form>
+    {% endif %} {% else %}
+    <p><a href="{{ url_for('login') }}">Log in</a> to leave a review.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

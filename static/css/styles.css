@@ -1,0 +1,72 @@
+@font-face {
+  font-family: "Futura";
+  src: url("../fonts/Futura Display.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "JosefinSans";
+  src: url("../fonts/JosefinSans.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "GloriaHallelujah";
+  src: url("../fonts/GloriaHallelujah.ttf") format("truetype");
+}
+
+body {
+  font-family: "JosefinSans", sans-serif;
+}
+
+.navbar{
+  border-bottom: 2px solid;
+  box-shadow: 0 2px 5px;
+}
+
+.title{
+  border-bottom: 2px solid;
+}
+
+.list-title{
+  margin: 30px 0;
+}
+
+.profile-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 30%;
+    object-fit: cover;
+    box-shadow: #5bc9cf 0px 0px 19px 2px;
+    margin-bottom: 30px
+}
+
+.professor-box{
+  border-radius: 10%;
+  padding-bottom: 50px;
+}
+
+.card-container {
+  margin: auto;
+  align-items: center;
+  max-width: 700px;
+}
+
+.card{
+  margin: 10px 0px !important;
+  text-align: left;
+}
+
+.ai-summery {
+  text-align: left;
+  margin-bottom: 50px;
+}
+
+.comment-area{
+  height: 160px;
+}
+
+@media (max-width: 992px) {
+    .navbar-nav {
+        align-items: center;
+        flex-direction: column;
+    }
+}

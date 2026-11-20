@@ -1,0 +1,11 @@
+Flask==2.3.2
+Flask_SQLAlchemy==3.0.3
+Flask-Login==0.6.3
+requests==2.32.5
+Flask-WTF==1.1.1
+Werkzeug==2.3.7
+python-dotenv==1.0.1
+transformers
+torch
+openai
+markdown

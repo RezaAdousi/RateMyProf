@@ -1,0 +1,62 @@
+{% extends "layout.html" %} {% block title %} Register {% endblock %} {% block
+main %}
+<form action="{{ url_for('register') }}" method="post">
+  <div class="mb-3">
+    <input
+      required
+      autocomplete="off"
+      autofocus
+      class="form-control mx-auto w-auto"
+      name="username"
+      placeholder="Username"
+      type="text"
+    />
+  </div>
+  <div class="mb-3">
+    <input
+      required
+      class="form-control mx-auto w-auto"
+      name="email"
+      placeholder="Email"
+      type="email"
+    />
+  </div>
+  <div class="mb-3">
+    <input
+      required
+      autocomplete="off"
+      class="form-control mx-auto w-auto"
+      name="password"
+      placeholder="Password"
+      type="password"
+    />
+  </div>
+  <div class="mb-3">
+    <input
+      required
+      autocomplete="off"
+      class="form-control mx-auto w-auto"
+      name="confirmation"
+      placeholder="Password Confirmation"
+      type="password"
+    />
+  </div>
+
+  <div class="mb-3">
+    <input
+      type="checkbox"
+      class="form-check-input"
+      id="agree"
+      name="agree"
+      required
+    />
+    <label class="form-check-label" for="agree" style="margin-left: 10px"
+      >I agree with the rules.</label
+    >
+  </div>
+  <button class="btn btn-primary" type="submit">Register</button>
+  <p style="margin-top: 20px">
+    Already a user? <a href="{{ url_for('login') }}">Login here</a>
+  </p>
+</form>
+{% endblock %}

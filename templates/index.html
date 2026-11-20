@@ -1,0 +1,73 @@
+{% extends "layout.html" %} {% block title %} Home {% endblock %} {% block main
+%}
+<div class="title">
+  <h2>Welcome to RateMyProf!</h2>
+  <p>
+    Rate your professors, leave comments, and let our AI tell you about them
+  </p>
+</div>
+
+<h3 class="list-title">List of Professors:</h3>
+<div class="container marketing professors-list">
+  <div class="row justify-content-center" style="margin-bottom: 50px">
+    <div class="col-md-6">
+      <div class="search-container">
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Search..."
+          id="search"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for prof in professors %}
+    <div class="col-lg-4 text-center mb-4 professor-box">
+      <img
+        src="{{ prof.photo_url or '/static/default.jpg' }}"
+        alt="Profile image"
+        class="profile-img"
+      />
+
+      <h2>{{ prof.name }}</h2>
+      <p><em>{{ prof.department }}</em></p>
+
+      <p>Overall rating: {{ "%.1f"|format(prof.overall_score) }} ⭐</p>
+
+      <p>
+        <a
+          class="btn btn-secondary"
+          href="{{ url_for('prof_profile', prof_id=prof.id) }}"
+          role="button"
+        >
+          View details »
+        </a>
+      </p>
+    </div>
+    {% else %}
+    <p>No professors found yet!</p>
+    {% endfor %}
+  </div>
+</div>
+<script>
+  const searchInput = document.getElementById("search");
+  const professorBoxes = document.querySelectorAll(".professor-box");
+
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+
+    professorBoxes.forEach((box) => {
+      const name = box.querySelector("h2").textContent.toLowerCase();
+      const dept = box.querySelector("p em").textContent.toLowerCase();
+      if (name.includes(query) || dept.includes(query)) {
+        box.style.display = "block";
+      } else {
+        box.style.display = "none";
+      }
+    });
+  });
+</script>
+
+{% endblock %}
